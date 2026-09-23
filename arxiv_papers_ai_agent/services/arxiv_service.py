@@ -2,6 +2,7 @@ from services.base_http_client import BaseHTTPClient
 from dotenv import load_dotenv 
 import os 
 from utils.parse_feed import parseRssText
+from models.arxiv_search_result import ArxivSearchEntry, ArxivSearchResult
 
 load_dotenv()
 
@@ -25,7 +26,17 @@ class ArxivService:
             response = self.client.getCall("query", qpParams = qpParams)
             feedObj =  parseRssText(response)
             feed = feedObj.feed 
-            return feed 
-            
+            entries = []
+            for entry in feed.entries:
+                authorNames = []
+                for author in entry.authors:
+                    authorNames.append(author.name)
+                pdfLink = ''
+                for link in entry.links:
+                    if entry.attributes['type'] == 'application/pdf':
+                        pdfLink = link.attributes['href']
+                searchEntry = ArxivSearchEntry(id = entry.id, title = entry.title, authors = authorNames, summary = entry.summary, pdfLink=pdfLink, published=entry.published)
+                entries.append(searchEntry)
+            return ArxivSearchResult(entries=entries, id = feed.id, title = feed.title)
         except Exception as e:
             return self._handleError(e)

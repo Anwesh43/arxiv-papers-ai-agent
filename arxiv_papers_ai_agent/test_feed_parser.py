@@ -9,11 +9,21 @@ if __name__ == "__main__":
     print("AAUTHORS", feed.feed.content.authors)
     
     for entry in feed.feed.entries:
-        print("____ENTRY____", entry.content.__dict__.keys())
+        # print("____ENTRY____", entry.content.__dict__.keys())
         print(entry.id)
         print(entry.title)
-        print(entry.authors)
+        names = []
+        # for author in entry.authors:
+        #     print(author.name)
+        #     #print(author.email)
         print(entry.summary)
+        for link in entry.links:
+            
+            print(link.attributes['href'])
+            print(link.attributes['type'])
+        print(str(entry.published), type(str(entry.published)))
+        for category in entry.categories:
+            print(category.__dict__)
     
 
 
