@@ -10,5 +10,5 @@ agent = Agent(
 
 async def analyseArxivPapers(prompt : str):
     async with agent.run_stream(prompt) as result:
-        async for token in result.stream_text(delt=True):
+        async for token in result.stream_text(delta=True):
             print(token, end = '')
