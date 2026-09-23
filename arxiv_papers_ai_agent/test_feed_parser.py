@@ -13,9 +13,9 @@ if __name__ == "__main__":
         print(entry.id)
         print(entry.title)
         names = []
-        # for author in entry.authors:
-        #     print(author.name)
-        #     #print(author.email)
+        for author in entry.authors:
+            print(author.name)
+            #print(author.email)
         print(entry.summary)
         for link in entry.links:
             

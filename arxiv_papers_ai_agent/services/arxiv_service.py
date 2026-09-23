@@ -11,7 +11,7 @@ class ArxivService:
         self.client = BaseHTTPClient(os.environ['ARXIV_BASE_URL'])
 
     def _handleError(self, e):
-        print("Error", e)
+        #print("Error", e)
         return {
             "status": "error",
             "message": str(e)
@@ -30,13 +30,16 @@ class ArxivService:
             for entry in feed.entries:
                 authorNames = []
                 for author in entry.authors:
-                    authorNames.append(author.name)
+                    #print(author.name)
+                    authorNames.append(author.name.content)
+                print("AuthorNames", authorNames)
                 pdfLink = ''
                 for link in entry.links:
-                    if entry.attributes['type'] == 'application/pdf':
+                    if link.attributes['type'] == 'application/pdf':
                         pdfLink = link.attributes['href']
-                searchEntry = ArxivSearchEntry(id = entry.id, title = entry.title, authors = authorNames, summary = entry.summary, pdfLink=pdfLink, published=entry.published)
+                        break 
+                searchEntry = ArxivSearchEntry(id = entry.id.content, title = entry.title.content, authors = authorNames, summary = entry.summary.content, pdfLink=pdfLink, published=str(entry.published))
                 entries.append(searchEntry)
-            return ArxivSearchResult(entries=entries, id = feed.id, title = feed.title)
+            return ArxivSearchResult(entries=entries, id = feed.id.content, title = feed.title.content)
         except Exception as e:
             return self._handleError(e)

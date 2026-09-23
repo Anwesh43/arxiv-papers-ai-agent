@@ -12,5 +12,5 @@ def writeHTML(htmlStr : str, fileName : str):
         f.write(htmlStr)
     return {
         "status": "success",
-        "message": f"Written html to {fileName}, don't display html to fileName"
+        "message": f"Written html to {fileName}, don't display html to user"
     }
